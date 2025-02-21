@@ -8,11 +8,7 @@ const Task = require("./task.model");
 const cors = require("cors");
 
 const app = express();
-app.use(cors({ 
-   origin: process.env.ORIGIN_URL || "http://localhost:5173",
-    // origin: "http://localhost:5173", 
-    methods: ["GET", "POST", "PATCH", "DELETE"] 
-}));
+app.use(cors());
 app.use(express.json());
 
 // Step 1 : Connecting to MongoDB before starting the server
