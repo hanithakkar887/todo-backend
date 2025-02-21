@@ -91,8 +91,6 @@
 // });
 
 
-
-
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -128,11 +126,11 @@ app.get("/", (req, res) => {
     res.send("Welcome to my server");
 });
 
-// UPDATE Task (Priority before READ)
+// UPDATE Task
 app.patch("/tasks/:id", async (req, res) => {
     try {
-        const { title, desc, status } = req.body;
-        const task = await Task.findByIdAndUpdate(req.params.id, { title, desc, status }, { new: true });
+        const { title, desc, status, priority } = req.body;
+        const task = await Task.findByIdAndUpdate(req.params.id, { title, desc, status, priority }, { new: true });
 
         if (!task) {
             return res.status(404).json({ message: "Task not found" });
@@ -143,7 +141,7 @@ app.patch("/tasks/:id", async (req, res) => {
     }
 });
 
-// DELETE Task (Priority before READ)
+// DELETE Task
 app.delete("/tasks/:id", async (req, res) => {
     try {
         const task = await Task.findByIdAndDelete(req.params.id);
@@ -156,7 +154,7 @@ app.delete("/tasks/:id", async (req, res) => {
     }
 });
 
-// READ All Tasks (Comes after UPDATE & DELETE)
+// READ All Tasks
 app.get("/tasks", async (req, res) => {
     try {
         const tasks = await Task.find({});
@@ -166,11 +164,11 @@ app.get("/tasks", async (req, res) => {
     }
 });
 
-// CREATE Task (Lowest Priority)
+// CREATE Task
 app.post("/tasks", async (req, res) => {
     try {
-        const { title, desc, status } = req.body;
-        const task = await Task.create({ title, desc, status });
+        const { title, desc, status, priority } = req.body;
+        const task = await Task.create({ title, desc, status, priority });
         res.status(201).json({ message: "Your task is created", task });
     } catch (error) {
         res.status(500).json({ message: "Error creating task", error });
